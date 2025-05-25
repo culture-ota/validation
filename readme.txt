@@ -7,6 +7,7 @@
 #검증 1. Cultural Token
 docker stop c3476e27ebcf
 docker start c3476e27ebcf
+(docker stop 및 start는 최초시에만, 이후 창을 열어서 docker 접속시 매 창에 대해 아래 4개 명령어 모두 실행)
 
 docker exec -it -e DISPLAY=$DISPLAY c3476e27ebcf /bin/bash
 export DISPLAY=localhost:12.0 
