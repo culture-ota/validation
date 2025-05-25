@@ -41,11 +41,12 @@ python /home/e2map/clean_map/move_final.py
 #검증 2. OTA Update (ns-3 simulator)
 docker 내부에서 아래 폴더에 접속 
 cd home/ns-3-allinone/ns-3-dev/
-
-./ns3 build
-
+폴더에서 실행
 ./ns3 run token_full_update.cc
+./ns3 run token_delta_update.cc
+./ns3 run model_update.cc
 
+시각화 (netanim 기반)
 cd /home/ns-3-allinone/netanim/build/bin
 ./netanim ~/ns-3-allinone/ns-3-dev/multi-link.xml
 
