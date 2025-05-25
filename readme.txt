@@ -36,17 +36,27 @@ roslaunch rviz_map rviz_map.launch
 5번창 (실행 코드)
 python /home/e2map/clean_map/move_final.py
 
+Result 기반 LLAMA3.1 Reasoning (cultural.txt 저장)
+python /home/e2map/clean_map/llama3_input_2.py
+
+Culture token 생성 (cultural_token.txt 저장)
+python /home/e2map/clean_map/llama3_input_1.py
+
+>token 기반 local policy 생성
+>LoRA Fine-tuning
 
 
 #검증 2. OTA Update (ns-3 simulator)
+
+>ns-3 simulator
 docker 내부에서 아래 폴더에 접속 
-cd home/ns-3-allinone/ns-3-dev/
-폴더에서 실행
+cd home/ns-3-allinone/ns-3-dev/ 
+폴더에서 아래 명령어 실행
 ./ns3 run token_full_update.cc
 ./ns3 run token_delta_update.cc
 ./ns3 run model_update.cc
 
-시각화 (netanim 기반)
+>시각화 (netanim 기반)
 cd /home/ns-3-allinone/netanim/build/bin
 ./netanim ~/ns-3-allinone/ns-3-dev/multi-link.xml
 
