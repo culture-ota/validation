@@ -4,59 +4,59 @@
 #공전원 1번 서버로 SSH 접속 - IP는 연구실 내부에만 공유되어 있음
 #계정 seyeolyang 비밀번호 aril0246
 
-#검증 1. Cultural Token
+###검증 1. Cultural Token
 docker stop c3476e27ebcf
 docker start c3476e27ebcf
-(docker stop 및 start는 최초시에만, 이후 창을 열어서 docker 접속시 매 창에 대해 아래 4개 명령어 모두 실행)
+#(docker stop 및 start는 최초시에만, 이후 창을 열어서 docker 접속시 매 창에 대해 아래 4개 명령어 모두 실행)
 
 docker exec -it -e DISPLAY=$DISPLAY c3476e27ebcf /bin/bash
 export DISPLAY=localhost:12.0 
 conda activate e2map 
 source /home/e2map/devel/setup.bash
 
-이후 docker 내부에서 xclock 시 시계가 안뜬다면 X11 forwarding 실패로, 다시 exit를 통해 docker 외부에서의 DISPLAY 값으로 일치시켜 주어야 함
-echo $DISPLAY 시 확인되는 localhost:# 값으로 export DISPLAY의 localhost:# 값으로 변경 해야함
+#이후 docker 내부에 진입해서 xclock 명령시 시계가 안뜬다면 X11 forwarding 실패로, 다시 exit를 통해 docker 외부에서의 DISPLAY 값으로 일치시켜 주어야 함
+#echo $DISPLAY 시 확인되는 localhost:# 값으로 export DISPLAY의 localhost:# 값으로 변경 해야함. 이후 docker 내부에서 xclock 시 동작해야 함
 
-1번창
+#1번 윈도우
 roscore ([roscore 실행이 안될때 - RLException: Unable to contact my own server at [http://ubuntu:43391/])
 sudo nano /etc/hosts
 127.0.0.1       localhost
 127.0.0.1       ubuntu        #이걸 추가
 192.168.0.84    ubuntu
 
-2번창
+#2번 윈도우
 roslaunch clean_e2map ikea_1.launch (ikea_2 ~ 5 동일)
 
-3번창
+#3번 윈도우
 roslaunch irobot spawn_iRobot.launch
 
-4번창
+#4번 윈도우
 roslaunch rviz_map rviz_map.launch
 
-5번창 (실행 코드)
+#5번 윈도우 (최종 실행 코드)
 python /home/e2map/clean_map/move_final.py
 
-Result 기반 LLAMA3.1 Reasoning (cultural.txt 저장)
+#청소 결과 및 culture persona input시 LLAMA3.1 Reasoning (cultural.txt 가 output 파일)
 python /home/e2map/clean_map/llama3_input_2.py
 
-Culture token 생성 (cultural_token.txt 저장)
+#Culture token 생성 (cultural_token.txt 저장)
 python /home/e2map/clean_map/llama3_input_1.py
 
 >token 기반 local policy 생성
 >LoRA Fine-tuning
 
 
-#검증 2. OTA Update (ns-3 simulator)
+###검증 2. OTA Update (ns-3 simulator)
 
->ns-3 simulator
-docker 내부에서 아래 폴더에 접속 
+#ns-3 simulator
+#docker 내부에서 아래 폴더에 접속 
 cd home/ns-3-allinone/ns-3-dev/ 
-폴더에서 아래 명령어 실행
+#폴더에서 아래 명령어 실행 (Point-to-point UDP test, 4개 network type 동시 전송됨)
 ./ns3 run token_full_update.cc
 ./ns3 run token_delta_update.cc
 ./ns3 run model_update.cc
 
->시각화 (netanim 기반)
+#시각화 (netanim 기반) 위 코드 실행 시 각각의 xml 파일이 출력됨. xml 파일명을 직접 아래 디렉토리 내에서 이동하여 실행 필요
 cd /home/ns-3-allinone/netanim/build/bin
 ./netanim ~/ns-3-allinone/ns-3-dev/multi-link.xml
 
