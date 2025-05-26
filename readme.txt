@@ -25,7 +25,7 @@ sudo nano /etc/hosts
 192.168.0.84    ubuntu
 
 #2번 윈도우
-roslaunch clean_e2map ikea_1.launch (ikea_2 ~ 5 동일)
+roslaunch clean_e2map ikea_1.launch #(ikea_2 ~ 5 동일)
 
 #3번 윈도우
 roslaunch irobot spawn_iRobot.launch
