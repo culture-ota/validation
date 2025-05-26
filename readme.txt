@@ -44,6 +44,8 @@ python /home/e2map/clean_map/llama3_input_1.py
 
 >token 기반 local policy 생성
 >LoRA Fine-tuning
+>Path planning 코드
+>Obstacle avoid 코드 
 
 
 ###검증 2. OTA Update (ns-3 simulator)
