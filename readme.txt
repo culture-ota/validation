@@ -50,6 +50,26 @@ python /home/e2map/clean_map/llama3_input_1.py
 
 ###검증 2. OTA Update (ns-3 simulator)
 
+#Global Policy update
+cd /home/uptane
+python -i demo/start_servers.py
+
+#인터프리터 내부에서 아래 명령 수행
+firmware_fname = filepath_in_repo = 'firmware.img'
+open(firmware_fname, 'w').write('Fresh firmware image')
+di.add_target_to_imagerepo(firmware_fname, filepath_in_repo)
+di.write_to_live()
+ctrl+D
+
+#Primary ECU에서 실행
+python -i global_policy.py 
+vin='vacuum'; ecu_serial='TCUvacuum'
+dd.add_target_to_director(firmware_fname, filepath_in_repo, vin, ecu_serial)
+dd.write_to_live(vin_to_update=vin)
+
+
+
+
 #ns-3 simulator
 #docker 내부에서 아래 폴더에 접속 
 cd home/ns-3-allinone/ns-3-dev/ 
