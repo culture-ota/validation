@@ -28,7 +28,7 @@ sudo nano /etc/hosts
 roslaunch clean_e2map ikea_1.launch #(ikea_2 ~ 5 동일)
 
 #3번 윈도우
-roslaunch irobot spawn_Robot1.launch
+roslaunch irobot spawn_Robot1.launch #(ikea_2 ~ 5 동일)
 
 #4번 윈도우
 roslaunch rviz_map rviz_map.launch
