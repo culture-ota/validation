@@ -28,7 +28,7 @@ sudo nano /etc/hosts
 roslaunch clean_e2map ikea_1.launch #(ikea_2 ~ 5 동일)
 
 #3번 윈도우
-roslaunch irobot spawn_iRobot.launch
+roslaunch irobot spawn_Robot1.launch
 
 #4번 윈도우
 roslaunch rviz_map rviz_map.launch
@@ -43,9 +43,11 @@ python /home/e2map/clean_map/llama3_input_2.py
 python /home/e2map/clean_map/llama3_input_1.py
 
 >token 기반 local policy 생성
->LoRA Fine-tuning
->Path planning 코드
+#Path planning 코드 (전체 SLAM map이 완성되있는 상태에서 해야 path.txt 추출가능)
+python /home/e2map/clean_map/path_planing_1.py
+
 >Obstacle avoid 코드 
+>LoRA Fine-tuning
 
 
 ###검증 2. OTA Update (ns-3 simulator)
