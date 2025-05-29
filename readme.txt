@@ -33,7 +33,10 @@ roslaunch irobot spawn_Robot1.launch #(ikea_2 ~ 5 동일)
 #4번 윈도우
 roslaunch rviz_map rviz_map.launch
 
-#5번 윈도우 (최종 실행 코드)
+#5번 윈도우 (dirt map)
+python /home/e2map/clean_map/dirt_map.py #해당 코드 실행 후 rivz 상 /dirt_map_image의 Image 토픽 등록 시 실시간 잔여 오염도 확인 가능
+
+#6번 윈도우 (최종 실행 코드)
 python /home/e2map/clean_map/move_final.py
 
 #청소 결과 및 culture persona input시 LLAMA3.1 Reasoning (cultural.txt 가 output 파일)
