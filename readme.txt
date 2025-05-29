@@ -55,24 +55,42 @@ python /home/e2map/clean_map/path_planing_1.py
 
 ###검증 2. OTA Update (ns-3 simulator)
 
-#Global Policy update
+##Global Policy update (호스트 서버 → 도커 내부)
+
+#1번 윈도우 (도커 외부, 호스트 서버)
+conda activate python3.10
+cd /data/seyeolyang/uptane
+python -i manufacturer.py
+#같은 윈도우의 인터프리터 내부에서 아래 명령 수행
+firmware_fname = filepath_in_repo = 'global_policy_1.yaml'   # 같은 폴더내에 위치하고 있는 글로벌 정책 파일
+di.add_target_to_imagerepo(firmware_fname, filepath_in_repo) # Image repo 폴더에 Fireware로 등록
+di.write_to_live()                                           # 검증용 metadate 작성
+vin='vacuum_1'; ecu_serial='global_1'                        # Target 정보 생성
+dd.add_target_to_director(firmware_fname, filepath_in_repo, vin, ecu_serial) # Director repo로 Fireware 지정
+dd.write_to_live(vin_to_update=vin)                                          # 해당 ECU에 실제 배포
+
+#2번 윈도우 (도커 내부)
 cd /home/uptane
-python -i demo/start_servers.py
+python
+#같은 윈도우의 인터프리터 내부에서 아래 명령 수행
+import ECU as ecu
+ecu.clean_slate()   #ECU Initialize 
 
-#인터프리터 내부에서 아래 명령 수행
-firmware_fname = filepath_in_repo = 'firmware.img'
-open(firmware_fname, 'w').write('Fresh firmware image')
-di.add_target_to_imagerepo(firmware_fname, filepath_in_repo)
-di.write_to_live()
-ctrl+D
+#3번 윈도우 (도커 내부)
+cd /home/uptane
+python
+#같은 윈도우의 인터프리터 내부에서 아래 명령 수행
+import primary as pr
+pr.clean_slate()    #Primary Initialize 
+#다시 2번 윈도우에서
+ecu.update_cycle()  #OTA update 수행 (제조사 → ECU)
+#다시 3번 윈도우에서
+pr.update_cycle()   #OTA update 수행 (ECU → Primary) 최종 Primary가 업데이트 되는것이므로 updated 창이 떠야 함.
+ctrl+D 로 나와서 같은 폴더인 /home/uptane/global_1/global_policy_1.yaml 이 전송된 것 확인
 
-#Primary ECU에서 실행
-python -i global_policy.py 
-vin='vacuum'; ecu_serial='TCUvacuum'
-dd.add_target_to_director(firmware_fname, filepath_in_repo, vin, ecu_serial)
-dd.write_to_live(vin_to_update=vin)
+##Local Policy update (도커 내부 → 호스트 서버)
 
-
+firmware_fname = filepath_in_repo = 'delta_cultural_token_1.txt'
 
 
 #ns-3 simulator
