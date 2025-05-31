@@ -90,8 +90,33 @@ ctrl+D 로 나와서 같은 폴더인 /home/uptane/global_1/global_policy_1.yaml
 
 ##Local Policy update (도커 내부 → 호스트 서버)
 
+#1번 윈도우 (도커 내부)
+cd /home/uptane
+python -i ecu_server.py
 firmware_fname = filepath_in_repo = 'delta_cultural_token_1.txt'
+di.add_target_to_imagerepo(firmware_fname, filepath_in_repo) 
+di.write_to_live()                                          
+vin='vacuum_2'; ecu_serial='local_1'                        
+dd.add_target_to_director(firmware_fname, filepath_in_repo, vin, ecu_serial)
+dd.write_to_live(vin_to_update=vin)                                      
 
+#2번 윈도우 (도커 외부, 제조사 서버)
+conda activate python3.10
+cd /data/seyeolyang/uptane
+python
+#같은 윈도우의 인터프리터 내부에서 아래 명령 수행
+import manufacturer_server as ms
+ms.clean_slate()
+
+#3번 윈도우 (도커 외부, 제조사 스토리지)
+cd /home/uptane
+python
+import manufacturer_tokenstorage as mt
+mt.clean_slate()
+#다시 2번 윈도우에서
+ms.update_cycle()  
+#다시 3번 윈도우에서
+mt.update_cycle()    # UPDATED 뜨면서 token값 출력 및 저장되면 성공
 
 #ns-3 simulator
 #docker 내부에서 아래 폴더에 접속 
